@@ -14,26 +14,31 @@
   <main style="max-width: 1200px; margin: 0 auto; padding: 0 20px; display: flex;">
     <div class="sidebar" style="flex: 1;">
       <h2>Chọn Nguyên Liệu</h2>
+      <input type="text" id="search-input" placeholder="Tìm kiếm nguyên liệu..." />
       <div id="ingredient-list" class="ingredient-cards"></div>
     </div>
     <div style="flex: 1.5; padding-left: 30px">
       <h2>Kết quả gợi ý:</h2>
       <div id="results"></div>
     </div>
-    
   </main>
 
   <script>
     const ingredientList = document.getElementById('ingredient-list');
     const resultsDiv = document.getElementById('results');
+    const searchInput = document.getElementById('search-input');
+    let allIngredients = [];
     let selected = [];
 
     async function fetchIngredients() {
       const res = await fetch('/ingredients');
-      const ingredients = await res.json();
+      allIngredients = await res.json();
+      renderIngredients(allIngredients);
+    }
 
+    function renderIngredients(ingredients) {
       ingredientList.innerHTML = ingredients.map(i => `
-        <div class="ingredient-card" data-name="${i}">${i}</div>
+        <div class="ingredient-card${selected.includes(i) ? ' selected' : ''}" data-name="${i}">${i}</div>
       `).join('');
     }
 
@@ -80,7 +85,14 @@
       fetchRecipes();
     });
 
+    searchInput.addEventListener('input', () => {
+      const query = searchInput.value.trim().toLowerCase();
+      const filtered = allIngredients.filter(i => i.toLowerCase().includes(query));
+      renderIngredients(filtered);
+    });
+
     fetchIngredients();
   </script>
 </body>
+
 </html>
