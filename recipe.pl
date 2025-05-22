@@ -54,7 +54,7 @@ recipe('Gung rang', ['gung', 'toi', 'muoi', 'tieu']).
 recipe('Ca ngu ap chao', ['ca ngu', 'toi', 'muoi', 'tieu', 'dau an']).
 recipe('Sup mang tay', ['mang tuoi', 'ca rot', 'muoi', 'tieu', 'hanh']).
 recipe('Khoai lang canh', ['khoai lang', 'ca rot', 'hanh', 'muoi']).
-recipe('Bo luc lac', ['ot', 'hanh', 'toi', 'muoi', 'tieu']).
+recipe('Bo luc lac', ['thit bo', 'ot', 'hanh', 'toi', 'muoi', 'tieu']).
 recipe('Canh rau cai', ['rau cai', 'ca rot', 'cu cai trang', 'hanh', 'muoi']).
 recipe('Bun rieu', ['ca chua', 'rau thom', 'tom', 'cua', 'hanh']).
 recipe('Nam linh chi xao dau me', ['nam linh chi', 'dau me', 'toi', 'muoi']).
@@ -88,6 +88,7 @@ replacement('muoi', 'nuoc mam').
 replacement('tieu', 'ot').
 replacement('dau an', 'dau me').
 replacement('thit ga', 'thit bo').
+replacement('thit bo', 'thit heo').
 replacement('rau thom', 'la que').
 replacement('banh mi', 'com').
 replacement('trung', 'dau phu non').

@@ -87,7 +87,7 @@ app.post('/suggest', (req, res) => {
   const quotedIngredients = ingredients.map(i => `'${i}'`).join(', ');
   const prologList = `[${quotedIngredients}]`;
 
-  const goal = `consult('recipe.pl'), consult('recipe_logic.pl'), findall(R, suggest_recipe(${prologList}, R), L), write(L), halt.`;
+  const goal = `consult('recipe.pl'), consult('recipe_logic.pl'), all_suggested_recipes(${prologList}, L), write(L), nl, halt.`;
   const command = `swipl -q -g "${goal}"`;
 
   exec(command, (err, stdout, stderr) => {

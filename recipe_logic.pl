@@ -1,8 +1,15 @@
-% Bidirectional replacement check: X and Y can replace each other
+% Direct bidirectional replacement
 are_replacements(X, Y) :-
-    replacement(X, Y).
+    (replacement(X, Y); replacement(Y, X)),
+    X \= Y.
+
+% The replacement can be extended up to 2 steps
 are_replacements(X, Y) :-
-    replacement(Y, X).
+    (replacement(X, Z); replacement(Z, X)),
+    (replacement(Z, Y); replacement(Y, Z)),
+    X \= Y,
+    X \= Z,
+    Y \= Z.
 
 % Find all possible used ingredients for a required ingredient (Req)
 % If Req is directly in Ingredients, use Req
@@ -46,10 +53,18 @@ all_in_ingredients([H|T], Ingredients) :-
     member(H, Ingredients),
     all_in_ingredients(T, Ingredients).
 
-% Main suggest predicate: for given Ingredients input, return recipe and each possible used ingredient combination
+% For given Ingredients input, return recipe and each possible used ingredient combination
 suggest_recipe(Ingredients, recipe_with_ingredients(Recipe, Used)) :-
     recipe(Recipe, Required), % Get required ingredients
     possible_used_list(Required, Ingredients, UsedOptionsList),
     combination(UsedOptionsList, DirtyUsed),
     remove_duplicates(DirtyUsed, Used), 
     all_in_ingredients(Used, Ingredients). % Used ingredients are from the given Ingredients
+
+% Query recipes and remove duplicated results
+all_suggested_recipes(Ingredients, UniqueRecipes) :-
+    findall(recipe_with_ingredients(R, Used),
+            suggest_recipe(Ingredients, recipe_with_ingredients(R, Used)),
+            Recipes),
+    sort(Recipes, UniqueRecipes).
+
