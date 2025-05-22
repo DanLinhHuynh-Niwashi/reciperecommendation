@@ -142,7 +142,7 @@ thit ga,thit bo
 1. User provides a list of available ingredients.
 2. Retrieve the list of required ingredients.
 3. For each required ingredient, create a list of possible usable ingredients (original + replacements).
-* Extended replacement up to 2 steps (e.g. thit ga <-> thit bo, thit bo <-> thit heo => thit ga <-> thit heo)
+* Extended replacement up to 2 steps (e.g. `thit ga ↔ thit bo, thit bo ↔ thit heo => thit ga ↔ thit heo`)
 
 ```prolog
 % Direct bidirectional replacement
@@ -162,7 +162,7 @@ are_replacements(X, Y) :-
 * Get a list of required + replacable ingredients
 ```prolog
 UsedOptionsList = [
-  [thit_ga, thit_bo],  % options for required ingredient 1
+  [thit ga, thit bo],  % options for required ingredient 1
   [com],               % options for required ingredient 2
   [hanh, toi]          % options for required ingredient 3
 ]
@@ -171,10 +171,10 @@ UsedOptionsList = [
 4. Find all possible combinations where one ingredient option is selected per required ingredient.
 
 ```
- `[thit_ga, com, hanh]`
- `[thit_ga, com, toi]`
- `[thit_bo, com, hanh]`
- `[thit_bo, com, toi]`
+ `[thit ga, com, hanh]`
+ `[thit ga, com, toi]`
+ `[thit bo, com, hanh]`
+ `[thit bo, com, toi]`
 ```
 
 ```prolog
