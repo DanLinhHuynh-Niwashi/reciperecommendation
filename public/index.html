@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8" />
+  <title>Đề xuất công thức</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <nav>
+    <a href="" aria-current="page">Đề xuất công thức</a>
+    <a href="manager.html">Kho công thức</a>
+  </nav>
+
+  <main style="max-width: 1200px; margin: 0 auto; padding: 0 20px; display: flex;">
+    <div class="sidebar" style="flex: 1;">
+      <h2>Chọn Nguyên Liệu</h2>
+      <div id="ingredient-list" class="ingredient-cards"></div>
+    </div>
+    <div style="flex: 1.5; padding-left: 30px">
+      <h2>Kết quả gợi ý:</h2>
+      <div id="results"></div>
+    </div>
+    
+  </main>
+
+  <script>
+    const ingredientList = document.getElementById('ingredient-list');
+    const resultsDiv = document.getElementById('results');
+    let selected = [];
+
+    async function fetchIngredients() {
+      const res = await fetch('/ingredients');
+      const ingredients = await res.json();
+
+      ingredientList.innerHTML = ingredients.map(i => `
+        <div class="ingredient-card" data-name="${i}">${i}</div>
+      `).join('');
+    }
+
+    async function fetchRecipes() {
+      if (selected.length === 0) {
+        resultsDiv.innerHTML = '<p>Vui lòng chọn ít nhất 1 nguyên liệu để gợi ý.</p>';
+        return;
+      }
+
+      const res = await fetch('/suggest', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ ingredients: selected })
+      });
+
+      const recipes = await res.json();
+
+      if (!recipes.length) {
+        resultsDiv.innerHTML = '<p>Không có món ăn phù hợp.</p>';
+        return;
+      }
+
+      resultsDiv.innerHTML = recipes.map(r => `
+        <div class="recipe">
+          <strong>${r.recipe}</strong><br>
+          Nguyên liệu: ${r.ingredients.join(', ')}
+        </div>
+      `).join('');
+    }
+
+    ingredientList.addEventListener('click', e => {
+      const card = e.target.closest('.ingredient-card');
+      if (!card) return;
+
+      const name = card.dataset.name;
+      if (selected.includes(name)) {
+        selected = selected.filter(i => i !== name);
+        card.classList.remove('selected');
+      } else {
+        selected.push(name);
+        card.classList.add('selected');
+      }
+
+      fetchRecipes();
+    });
+
+    fetchIngredients();
+  </script>
+</body>
+</html>
