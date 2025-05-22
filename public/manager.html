@@ -50,8 +50,8 @@
       <input type="text" id="recipeName" required />
 
       <label>Chọn nguyên liệu:</label>
-      <div id="ingredientCardsContainer" class="ingredient-cards">
-        <!-- ingredient cards will be inserted here -->
+      <input type="text" id="search-input" placeholder="Tìm kiếm nguyên liệu..." />
+      <div id="ingredientList" class="ingredient-cards">
       </div>
 
       <button type="submit">Thêm công thức</button>
@@ -60,6 +60,7 @@
   </section>
 
   <script>
+    
     async function fetchIngredients() {
       const res = await fetch('/ingredients');
       return res.json();
@@ -133,61 +134,67 @@
 
     const recipeForm = document.getElementById('recipeForm');
     const recipeNameInput = document.getElementById('recipeName');
-    const ingredientCardsContainer = document.getElementById('ingredientCardsContainer');
+    const ingredientList = document.getElementById('ingredientList');
     const recipeMessage = document.getElementById('recipeMessage');
-    let selectedIngredients = new Set();
+    const searchInput = document.getElementById('search-input');
 
-    function renderIngredientCards(ingredients) {
-      ingredientCardsContainer.innerHTML = '';
-      ingredients.forEach(i => {
-        const card = document.createElement('div');
-        card.className = 'ingredient-card';
-        card.textContent = i;
-        card.dataset.name = i;
+    let selected = [];
 
-        card.addEventListener('click', () => {
-          if (selectedIngredients.has(i)) {
-            selectedIngredients.delete(i);
-            card.classList.remove('selected');
-          } else {
-            selectedIngredients.add(i);
-            card.classList.add('selected');
-          }
-        });
-
-        ingredientCardsContainer.appendChild(card);
-      });
+    function renderIngredients(ingredients) {
+      ingredientList.innerHTML = ingredients.map(i => `
+        <div class="ingredient-card${selected.includes(i) ? ' selected' : ''}" data-name="${i}">${i}</div>
+      `).join('');
     }
 
-    recipeForm.addEventListener('submit', async (e) => {
-      e.preventDefault();
-      recipeMessage.textContent = '';
-      const name = recipeNameInput.value.trim();
-      const ingredients = Array.from(selectedIngredients);
+    searchInput.addEventListener('input', () => {
+      const query = searchInput.value.trim().toLowerCase();
+      const filtered = currentIngredients.filter(i => i.toLowerCase().includes(query));
+      renderIngredients(filtered);
+    });
 
-      if (!name) {
-        recipeMessage.textContent = 'Vui lòng thêm tên công thức.';
-        recipeMessage.className = 'error';
-        return;
-      }
-      if (ingredients.length === 0) {
-        recipeMessage.textContent = 'Vui lòng chọn ít nhất 1 nguyên liệu.';
-        recipeMessage.className = 'error';
-        return;
-      }
+    ingredientList.addEventListener('click', e => {
+      const card = e.target.closest('.ingredient-card');
+      if (!card) return;
 
-      try {
-        const res = await postData('/add-recipe', { name, ingredients });
-        recipeMessage.textContent = res.message || 'Đã thêm nguyên liệu.';
-        recipeMessage.className = 'message';
-        recipeNameInput.value = '';
-        selectedIngredients.clear();
-        renderIngredientCards(currentIngredients);
-      } catch (error) {
-        recipeMessage.textContent = error.message || 'Không thêm được nguyên liệu.';
-        recipeMessage.className = 'error';
+      const name = card.dataset.name;
+      if (selected.includes(name)) {
+        selected = selected.filter(i => i !== name);
+        card.classList.remove('selected');
+      } else {
+        selected.push(name);
+        card.classList.add('selected');
       }
     });
+
+    recipeForm.addEventListener('submit', async (e) => {
+  e.preventDefault();
+  recipeMessage.textContent = '';
+  const name = recipeNameInput.value.trim();
+
+  if (!name) {
+    recipeMessage.textContent = 'Vui lòng thêm tên công thức.';
+    recipeMessage.className = 'error';
+    return;
+  }
+
+  if (selected.length === 0) {
+    recipeMessage.textContent = 'Vui lòng chọn ít nhất 1 nguyên liệu.';
+    recipeMessage.className = 'error';
+    return;
+  }
+
+  try {
+    const res = await postData('/add-recipe', { name, ingredients: selected });
+    recipeMessage.textContent = res.message || 'Đã thêm công thức.';
+    recipeMessage.className = 'message';
+    recipeNameInput.value = '';
+    selected = [];
+    renderIngredients(currentIngredients); // re-render to reset selection state
+  } catch (error) {
+    recipeMessage.textContent = error.message || 'Không thêm được công thức.';
+    recipeMessage.className = 'error';
+  }
+});
 
     let currentIngredients = [];
 
@@ -195,7 +202,7 @@
       try {
         currentIngredients = await fetchIngredients();
 
-        renderIngredientCards(currentIngredients);
+        renderIngredients(currentIngredients);
 
         function fillSelect(select) {
           select.innerHTML = '<option value="">-- Chọn một nguyên liệu --</option>';
