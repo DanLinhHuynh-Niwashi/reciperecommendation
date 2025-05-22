@@ -33,13 +33,13 @@ recipe('Tom hap bia', ['tom', 'bia', 'muoi', 'ot']).
 recipe('Muc xao sa te', ['muc', 'sa te', 'toi', 'ot', 'muoi']).
 recipe('Ca hoi nuong', ['ca hoi', 'muoi', 'tieu', 'toi']).
 recipe('Canh cu den', ['cu den', 'ca rot', 'hanh', 'muoi']).
-recipe('Ga xao hanh tay', ['hanh tay', 'toi', 'muoi']).
+recipe('Ga xao hanh tay', ['thit ga', 'hanh tay', 'toi', 'muoi']).
 recipe('Sot dau hu non', ['dau phu non', 'ca chua', 'toi', 'muoi']).
 recipe('Ca chim nuong', ['ca chim', 'muoi', 'tieu', 'toi', 'ot']).
 recipe('Lau hai san', ['tom', 'muc', 'ca tre', 'rau thom', 'ca chua', 'ot', 'muoi']).
 recipe('Com tam', ['banh mi', 'thit heo', 'nuoc mam', 'hanh', 'tieu']).
 recipe('Canh khoai lang', ['khoai lang', 'ca rot', 'hanh', 'muoi']).
-recipe('Bo nuong sa te', ['sa te', 'toi', 'ot']).
+recipe('Bo nuong sa te', ['thit bo', 'sa te', 'toi', 'ot']).
 recipe('Chao dau xanh', ['dau xanh', 'com', 'muoi', 'tieu']).
 recipe('Canh khoai tay', ['khoai tay', 'ca rot', 'hanh', 'muoi']).
 recipe('Banh mi thit nguoi', ['banh mi', 'thit heo', 'rau thom', 'hanh']).
@@ -80,6 +80,7 @@ recipe('Canh cai bo xoi', ['cai bo xoi', 'ca rot', 'hanh', 'muoi']).
 recipe('Banh mi trung', ['banh mi', 'trung', 'muoi', 'tieu']).
 recipe('Canh khoai tay', ['khoai tay', 'ca rot', 'hanh', 'muoi']).
 recipe('Chao ga', ['thit ga', 'com', 'hanh', 'tieu', 'muoi']).
+recipe('Cá ngừ xào cải', ['muc', 'toi tay', 'ca ngu', 'cai bo xoi']).
 
 replacement('muc', 'tom').
 replacement('toi', 'hanh tay').
@@ -109,3 +110,4 @@ replacement('nuoc mam', 'duong').
 replacement('sua tuoi', 'bot tran chau').
 replacement('toi tay', 'la lot').
 replacement('la bac ha', 'rau ma').
+replacement('tom', 'toi').
