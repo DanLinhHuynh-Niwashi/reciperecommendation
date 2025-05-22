@@ -80,6 +80,7 @@ recipe('Canh cai bo xoi', ['cai bo xoi', 'ca rot', 'hanh', 'muoi']).
 recipe('Banh mi trung', ['banh mi', 'trung', 'muoi', 'tieu']).
 recipe('Canh khoai tay', ['khoai tay', 'ca rot', 'hanh', 'muoi']).
 recipe('Chao ga', ['thit ga', 'com', 'hanh', 'tieu', 'muoi']).
+recipe('Da dieu cham mam', ['thit da dieu', 'nuoc mam']).
 
 replacement('muc', 'tom').
 replacement('toi', 'hanh tay').
@@ -106,7 +107,7 @@ replacement('la chanh', 'chanh').
 replacement('pate', 'bo').
 replacement('ca chim', 'ca ngu').
 replacement('cai bo xoi', 'cai thia').
-replacement('nuoc mam', 'duong').
 replacement('sua tuoi', 'bot tran chau').
 replacement('toi tay', 'la lot').
 replacement('la bac ha', 'rau ma').
+replacement('thit da dieu', 'thit ga').
