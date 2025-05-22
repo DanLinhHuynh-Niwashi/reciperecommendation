@@ -139,10 +139,12 @@ thit ga,thit bo
 
 ### Logic Flow
 
-1. User provides a list of available ingredients.
-2. Retrieve the list of required ingredients.
-3. For each required ingredient, create a list of possible usable ingredients (original + replacements).
+**Step 1.** User provides a list of available ingredients.
+**Step 2.** Retrieve the list of required ingredients.
+**Step 3.** For each required ingredient, create a list of possible usable ingredients (original + replacements).
 * Extended replacement up to 2 steps (e.g. `thit ga ↔ thit bo, thit bo ↔ thit heo => thit ga ↔ thit heo`)
+* Get a list of required + replacable ingredients
+
 ```prolog
 % Direct bidirectional replacement
 are_replacements(X, Y) :-
@@ -157,7 +159,6 @@ are_replacements(X, Y) :-
     X \= Z,
     Y \= Z.
 ```
-* Get a list of required + replacable ingredients
 ```prolog
 UsedOptionsList = [
   [thit ga, thit bo],  % options for required ingredient 1
@@ -166,13 +167,14 @@ UsedOptionsList = [
 ]
 ```
 
-4. Find all possible combinations where one ingredient option is selected per required ingredient.
+**Step 4.** Find all possible combinations where one ingredient option is selected per required ingredient.
 ```
  `[thit ga, com, hanh]`
  `[thit ga, com, toi]`
  `[thit bo, com, hanh]`
  `[thit bo, com, toi]`
 ```
+
 ```prolog
 combination([], []).  % Base case: empty list corresponds to empty combination.
 
@@ -180,11 +182,12 @@ combination([L|Ls], [X|Xs]) :-
   member(X, L),           % Pick one element X from the first list L
   combination(Ls, Xs).    % Recursively do the same for the rest of lists Ls
 ```
+
 * Picks an ingredient `X` from the first list `L`.
 * Recursively generates combinations from the remaining lists `Ls`.
 * Combines `X` with the recursive result `Xs` to build the full combination.
 
-5. Filter out invalid combinations: Keep only combinations where **all ingredients exist** in the provided ingredient list.
+**Step 5.** Filter out invalid combinations: Keep only combinations where **all ingredients exist** in the provided ingredient list.
 ```prolog
 all_in_ingredients([], _).
 all_in_ingredients([H|T], Ingredients) :-
@@ -192,7 +195,7 @@ all_in_ingredients([H|T], Ingredients) :-
   all_in_ingredients(T, Ingredients).
 ```
 
-6. Repeat for all recipes to collect all matching recipes and their possible valid ingredient sets.
+**Step 6.** Repeat for all recipes to collect all matching recipes and their possible valid ingredient sets.
 
 ## APPLICATION SCREEN CAPTURES
 #### *Recipe suggestion page*: Ingredients loaded as cards, user can choose the card and the app will suggest all the possible recipes
