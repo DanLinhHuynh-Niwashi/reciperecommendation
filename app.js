@@ -98,19 +98,35 @@ app.post('/suggest', (req, res) => {
 
   const output = stdout.toString().trim();
 
-  const regex = /recipe_with_ingredients\(([^,]+),\[(.*?)\]\)/g;
+  const regex = /recipe_with_ingredients\(([^,]+),\[(.*?)\],\[(.*?)\]\)/g;
   const results = [];
   let match;
 
   while ((match = regex.exec(output)) !== null) {
     const recipe = match[1].trim();
-    const ingredientsStr = match[2].trim();
+  const requiredStr = match[2].trim();
+  const usedStr = match[3].trim();
 
-    const ingredients = ingredientsStr.length > 0
-      ? ingredientsStr.split(',').map(i => i.trim())
-      : [];
+  const required = requiredStr.length > 0
+    ? requiredStr.split(',').map(i => i.trim())
+    : [];
 
-    results.push({ recipe, ingredients });
+  const used = usedStr.length > 0
+    ? usedStr.split(',').map(i => i.trim())
+    : [];
+
+  // Determine which ingredients were replaced
+  const replaced = required.filter(r => !used.includes(r));
+
+  // Optional label if replacements occurred
+  const displayName = replaced.length > 0
+    ? `${recipe} (replaced: ${replaced.join(', ')})`
+    : recipe;
+
+  results.push({
+    recipe: displayName,
+    ingredients: used
+  });
   }
   console.log(output)
   res.json(results);

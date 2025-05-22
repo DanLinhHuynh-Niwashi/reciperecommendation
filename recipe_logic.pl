@@ -54,17 +54,24 @@ all_in_ingredients([H|T], Ingredients) :-
     all_in_ingredients(T, Ingredients).
 
 % For given Ingredients input, return recipe and each possible used ingredient combination
-suggest_recipe(Ingredients, recipe_with_ingredients(Recipe, Used)) :-
+suggest_recipe(Ingredients, recipe_with_ingredients(Recipe, Required, Used)) :-
     recipe(Recipe, Required), % Get required ingredients
     possible_used_list(Required, Ingredients, UsedOptionsList),
     combination(UsedOptionsList, DirtyUsed),
     remove_duplicates(DirtyUsed, Used), 
     all_in_ingredients(Used, Ingredients). % Used ingredients are from the given Ingredients
 
+% Helper to sort the ingredient lists inside recipe_with_ingredients
+normalize_recipe(recipe_with_ingredients(R, Required, Used),
+                 recipe_with_ingredients(R, SortedRequired, SortedUsed)) :-
+    sort(Required, SortedRequired),
+    sort(Used, SortedUsed).
+
 % Query recipes and remove duplicated results
 all_suggested_recipes(Ingredients, UniqueRecipes) :-
-    findall(recipe_with_ingredients(R, Used),
-            suggest_recipe(Ingredients, recipe_with_ingredients(R, Used)),
-            Recipes),
-    sort(Recipes, UniqueRecipes).
+    findall(Normalized,
+        (suggest_recipe(Ingredients, recipe_with_ingredients(R, Required, Used)),
+         normalize_recipe(recipe_with_ingredients(R, Required, Used), Normalized)),
+        NormalizedList),
+    sort(NormalizedList, UniqueRecipes).
 
