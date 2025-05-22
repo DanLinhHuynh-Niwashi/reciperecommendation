@@ -31,6 +31,12 @@ combination([L|Ls], [X|Xs]) :-
     member(X, L), % Choose X from the list L
     combination(Ls, Xs). % Recursively combine the rest
 
+% Check if all ingredients in Used are unique
+all_unique([]).
+all_unique([H|T]) :-
+    \+ member(H, T),   % H không xuất hiện trong phần còn lại T
+    all_unique(T).
+
 % Check if all ingredients in Used are contained in Ingredients
 all_in_ingredients([], _).
 all_in_ingredients([H|T], Ingredients) :-
@@ -42,4 +48,5 @@ suggest_recipe(Ingredients, recipe_with_ingredients(Recipe, Used)) :-
     recipe(Recipe, Required), % Get required ingredients
     possible_used_list(Required, Ingredients, UsedOptionsList),
     combination(UsedOptionsList, Used),
-    all_in_ingredients(Used, Ingredients). % Used ingredients are from the given Ingredients
+    all_in_ingredients(Used, Ingredients), % Used ingredients are from the given Ingredients
+    all_unique(Used). % Used ingredients are unique

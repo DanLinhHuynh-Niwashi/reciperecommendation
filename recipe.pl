@@ -28,7 +28,6 @@ recipe('Nam meo xao', ['nam meo', 'toi', 'muoi', 'dau an']).
 recipe('Ca ngu nuong', ['ca ngu', 'toi', 'muoi', 'tieu', 'ot']).
 recipe('Canh cai bo xoi', ['cai bo xoi', 'ca rot', 'hanh', 'muoi']).
 recipe('Banh mi trung', ['banh mi', 'trung', 'muoi', 'tieu']).
-recipe('De nuong', ['muoi', 'tieu', 'toi', 'ot']).
 recipe('Canh rau day', ['rau day', 'ca rot', 'hanh', 'muoi']).
 recipe('Tom hap bia', ['tom', 'bia', 'muoi', 'ot']).
 recipe('Muc xao sa te', ['muc', 'sa te', 'toi', 'ot', 'muoi']).
@@ -48,10 +47,8 @@ recipe('Rau muong xao', ['rau muong', 'toi', 'muoi', 'dau an']).
 recipe('Ca hoi ap chao', ['ca hoi', 'muoi', 'tieu', 'dau an', 'toi']).
 recipe('Ca rot kho', ['ca rot', 'hanh tay', 'toi', 'muoi', 'tieu']).
 recipe('Canh nam', ['nam rom', 'nam huong', 'hanh', 'toi', 'muoi']).
-recipe('Nai xao', ['toi', 'hanh', 'ot', 'muoi', 'tieu']).
 recipe('Banh mi chao', ['banh mi', 'trung', 'thit bo', 'hanh']).
-recipe('Cuu nuong', ['toi', 'muoi', 'tieu', 'hanh']).
-recipe('Ga chien mam', ['nuoc mam', 'toi', 'ot']).
+recipe('Ga chien mam', ['nuoc mam', 'toi', 'ot', 'thit ga']).
 recipe('Canh rau can', ['rau can', 'ca rot', 'hanh', 'muoi']).
 recipe('Gung rang', ['gung', 'toi', 'muoi', 'tieu']).
 recipe('Ca ngu ap chao', ['ca ngu', 'toi', 'muoi', 'tieu', 'dau an']).
